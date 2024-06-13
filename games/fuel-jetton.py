@@ -78,9 +78,9 @@ load_settings()
 driver = None
 target_element = None
 random_offset = random.randint(max(settings['lowestClaimOffset'],0), max(settings['highestClaimOffset'],0))
-script = "games/blum.py"
-prefix = "Blum:"
-url = "https://web.telegram.org/k/#@BlumCryptoBot"
+script = "games/fuel-jetton.py"
+prefix = "Fuel:"
+url = "https://web.telegram.org/k/#@fueljetton_bot"
 pot_full = "Filled"
 pot_filling = "to fill"
 
@@ -647,10 +647,6 @@ def launch_iframe():
         button.click()
     increase_step()
 
-    # HereWalletBot Pop-up Handling
-    select_iframe(step)
-    increase_step()
-
 def full_claim():
     global driver, target_element, settings, session_path, step, random_offset
     step = "100"
@@ -871,7 +867,7 @@ def find_working_link(old_step):
     global driver, screenshots_path, settings, step
     output(f"Step {step} - Attempting to open a link for the app...",2)
 
-    start_app_xpath = "//button[span[contains(text(), 'Launch Blum')]]"
+    start_app_xpath = "//button[span[contains(text(), 'Start pumping oil')]]"
     try:
         start_app_buttons = WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.XPATH, start_app_xpath)))
         clicked = False
