@@ -661,16 +661,17 @@ def full_claim():
 
     launch_iframe()
 
-    xpath = "//div[@class='farming-buttons-wrapper']//button"
-    move_and_click(xpath, 10, True, "click the 'Start farming' button (may already be running)", step, "clickable")
+    xpath = "//button[@class='in-storage-button']"
+    move_and_click(xpath, 10, True, "click the 'Send to warehouse' button", step, "clickable")
     increase_step()
 
-    get_balance(False)
+    # TODO: Don't know how to get balance 
+    # get_balance(False)
 
     wait_time_text = get_wait_time(step, "pre-claim") 
 
     if wait_time_text != "Filled":
-        matches = re.findall(r'(\d+)([hm])', wait_time_text)
+        matches = re.findall(r'(\d+)([hm])', wait_time_text) # TODO: Update regex to match Fuel Jetton time hh:mm:ss
         remaining_wait_time = (sum(int(value) * (60 if unit == 'h' else 1) for value, unit in matches)) + random_offset
         if remaining_wait_time < 5 or settings["forceClaim"]:
             settings['forceClaim'] = True
@@ -810,7 +811,7 @@ def get_wait_time(step_number="108", beforeAfter="pre-claim", max_attempts=1):
     for attempt in range(1, max_attempts + 1):
         try:
             output(f"Step {step} - First check if the time is still elapsing...", 3)
-            xpath = "//div[@class='time-left']"
+            xpath = "//div[@class='in-storage-button']"
             wait_time_value = monitor_element(xpath, 10)
             if wait_time_value != "Unknown":
                 return wait_time_value
@@ -867,7 +868,7 @@ def find_working_link(old_step):
     global driver, screenshots_path, settings, step
     output(f"Step {step} - Attempting to open a link for the app...",2)
 
-    start_app_xpath = "//button[span[contains(text(), 'Start pumping oil')]]"
+    start_app_xpath = "//a[@href='https://t.me/fueljetton_bot/app']"
     try:
         start_app_buttons = WebDriverWait(driver, 5).until(EC.presence_of_all_elements_located((By.XPATH, start_app_xpath)))
         clicked = False
@@ -901,7 +902,7 @@ def find_working_link(old_step):
             return True
 
     except TimeoutException:
-        output(f"Step {step} - Failed to find the 'Open Wallet' button within the expected timeframe.\n",1)
+        output(f"Step {step} - Failed to find the 'Start pumping oil' button within the expected timeframe.\n",1)
         if settings['debugIsOn']:
             screenshot_path = f"{screenshots_path}/{step}-timeout-finding-button.png"
             driver.save_screenshot(screenshot_path)
