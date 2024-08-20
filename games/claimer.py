@@ -12,7 +12,6 @@ from pyzbar.pyzbar import decode
 import qrcode_terminal
 import fcntl
 from fcntl import flock, LOCK_EX, LOCK_UN, LOCK_NB
-from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -30,6 +29,9 @@ except ImportError:
     import sys
     subprocess.check_call([sys.executable, "-m", "pip", "install", "requests"])
     import requests
+
+from session_proxy.selenium_wire import setup_driver_with_proxy, load_proxy
+
 
 class Claimer:
 
@@ -462,7 +464,13 @@ class Claimer:
 
         try:
             service = Service(chromedriver_path)
-            self.driver = webdriver.Chrome(service=service, options=chrome_options)
+            proxy_path = f"{self.session_path}/proxy.txt"
+            proxy_url = load_proxy(proxy_path)
+            if not proxy_url:
+                self.output(f"Proxy url not found. Please enter proxy url (Format: <USERNAME>:<PASSWORD>@<IP>:<PORT>)")
+                proxy_url = input()
+
+            self.driver = setup_driver_with_proxy(service, proxy_url, chrome_options, proxy_path)
             return self.driver
         except Exception as e:
             self.output(f"Initial ChromeDriver setup may have failed: {e}", 1)
@@ -787,8 +795,11 @@ class Claimer:
                     pass
 
                 self.output(f"Step {self.step} - No password error found.", 3)
+                time.sleep(10)
+
                 xpath = "//input[@type='password' and contains(@class, 'input-field-input')]"
-                fa_input = self.move_and_click(xpath, 5, False, "final check to make sure we are correctly logged in", self.step, "present")
+                fa_input = self.move_and_click(xpath, 10, False, "final check to make sure we are correctly logged in", self.step, "present")             
+
                 if fa_input:
                     self.output(f"Step {self.step} - 2FA password entry is still showing, check your debug screenshots for further information.\n", 1)
                     sys.exit()
