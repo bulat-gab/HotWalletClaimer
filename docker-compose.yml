@@ -1,0 +1,12 @@
+services:
+  bot:
+    container_name: "HotWalletClaimer"
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.gab
+    stop_signal: SIGINT
+    restart: unless-stopped
+    volumes:
+      - ./backups:/usr/src/app/backups
+      - ./selenium:/usr/src/app/selenium
+      - ./variables.txt:/usr/src/app/variables.txt

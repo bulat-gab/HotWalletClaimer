@@ -1,0 +1,11 @@
+wheel
+selenium
+Pillow
+pyzbar
+qrcode-terminal
+python-telegram-bot
+requests
+mitmproxy
+blinker==1.7.0
+selenium-wire
+setuptools
