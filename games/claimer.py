@@ -106,7 +106,7 @@ class Claimer:
         self.seed_phrase = None
         self.wallet_id = ""
         self.script = "default_script.py"
-        self.prefix = "Default:"
+        self.prefix = "Default_"
         self.allow_early_claim = True
 
     def run(self):

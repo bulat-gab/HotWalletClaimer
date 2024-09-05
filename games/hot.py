@@ -30,7 +30,7 @@ class HotClaimer(Claimer):
     def initialize_settings(self):
         super().initialize_settings()
         self.script = "games/hot.py"
-        self.prefix = "HOT:"
+        self.prefix = "HOT_"
         self.url = "https://web.telegram.org/k/#@herewalletbot"
         self.pot_full = "Filled"
         self.pot_filling = "to fill"
