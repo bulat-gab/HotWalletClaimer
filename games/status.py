@@ -31,9 +31,7 @@ def extract_detail(line, keyword):
     return line.split(f"{keyword}:")[1].strip() if keyword in line else "None"
 
 def fetch_and_process_logs(process_name):
-    sanitized_process_name = process_name.replace(':', '-').replace('_', '-')
-    log_file = f"/root/.pm2/logs/{sanitized_process_name}-out.log"
-
+    log_file = get_log_file_path(process_name)
     if not os.path.exists(log_file):
         return process_name, "None", "None", "None", "Log file missing"
 
@@ -158,9 +156,7 @@ def get_logs(process_id, process_list, lines=30):
     return get_logs_by_process_name(process_list[process_id - 1][0], lines)
 
 def get_logs_by_process_name(process_name, lines=30):
-    process_name = process_name.strip().replace('_', '-')
-    sanitized_process_name = process_name.replace(':', '-')
-    log_file = f"/root/.pm2/logs/{sanitized_process_name}-out.log"
+    log_file = get_log_file_path(process_name)
     logs = run_command(f"tail -n {lines} {log_file}")
     return logs
 
@@ -259,6 +255,15 @@ def main():
             break
         else:
             print("Invalid option. Please try again.")
+
+
+def get_log_file_path(process_name: str):
+    home_directory = os.getenv('HOME')
+    sanitized_process_name = process_name.strip().replace('_', '-').replace(':', '-')
+    log_file = f"{home_directory}/.pm2/logs/{sanitized_process_name}-out.log"
+
+    return log_file
+
 
 if __name__ == "__main__":
     main()
