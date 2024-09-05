@@ -7,6 +7,9 @@ services:
     stop_signal: SIGINT
     restart: unless-stopped
     volumes:
-      - ./backups:/usr/src/app/backups
-      - ./selenium:/usr/src/app/selenium
-      - ./variables.txt:/usr/src/app/variables.txt
+      - backups:/usr/src/app/backups
+      - selenium:/usr/src/app/selenium
+volumes:
+  backups:
+  selenium:
+    driver: local
