@@ -32,6 +32,8 @@ except ImportError:
 
 from session_proxy.selenium_wire import setup_driver_with_proxy, load_proxy
 
+# delay before timeout
+DELAY = 30
 
 class Claimer:
 
@@ -740,14 +742,14 @@ class Claimer:
         except TimeoutException:
             # Check for Storage Offline
             xpath = "//button[contains(text(), 'STORAGE_OFFLINE')]"
-            self.move_and_click(xpath, 10, True, "check for 'STORAGE_OFFLINE'", self.step, "visible")
+            self.move_and_click(xpath, DELAY, True, "check for 'STORAGE_OFFLINE'", self.step, "visible")
             if self.target_element:
                 self.output(f"Step {self.step} - ***Progress is blocked by a 'STORAGE_OFFLINE' button",1)
                 self.output(f"Step {self.step} - If you are re-usi,ng an old Wallet session; try to delete or create a new session.",1)
                 found_error = True
             # Check for flood wait
             xpath = "//button[contains(text(), 'FLOOD_WAIT')]"
-            self.move_and_click(xpath, 10, True, "check for 'FLOOD_WAIT'", self.step, "visible")
+            self.move_and_click(xpath, DELAY, True, "check for 'FLOOD_WAIT'", self.step, "visible")
             if self.target_element:
                 self.output(f"Step {self.step} - ***Progress is blocked by a 'FLOOD_WAIT' button", 1)
                 self.output(f"Step {self.step} - You need to wait for the specified number of seconds before retrying.", 1)
@@ -854,7 +856,7 @@ class Claimer:
         # There is a very unlikely scenario that the chat might have been cleared.
         # In this case, the "START" button needs pressing to expose the chat window!
         xpath = "//button[contains(., 'START')]"
-        button = self.move_and_click(xpath, 8, True, "check for the start button (should not be present)", self.step, "clickable")
+        button = self.move_and_click(xpath, DELAY, True, "check for the start button (should not be present)", self.step, "clickable")
         self.increase_step()
 
         # New link logic to avoid finding an expired link
@@ -868,7 +870,7 @@ class Claimer:
 
         # Now let's move to and JS click the "Launch" Button
         xpath = "//button[contains(@class, 'popup-button') and contains(., 'Launch')]"
-        button = self.move_and_click(xpath, 8, True, "click the 'Launch' button (probably not present)", self.step, "clickable")
+        button = self.move_and_click(xpath, DELAY, True, "click the 'Launch' button (probably not present)", self.step, "clickable")
         self.increase_step()
 
         # HereWalletBot Pop-up Handling
@@ -922,7 +924,7 @@ class Claimer:
         xpath = "//div[contains(@class, 'input-message-container')]/div[contains(@class, 'input-message-input')][1]"
         
         def attempt_send_start():
-            chat_input = self.move_and_click(xpath, 5, False, "find the chat window message input box", self.step, "present")
+            chat_input = self.move_and_click(xpath, DELAY, False, "find the chat window message input box", self.step, "present")
             if chat_input:
                 self.increase_step()
                 self.output(f"Step {self.step} - Attempting to send the '/start' command...",2)

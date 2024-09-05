@@ -93,7 +93,7 @@ class HotClaimer(Claimer):
         self.launch_iframe()
 
         xpath = "(//div[div/img[contains(@src, '/ft/near.png')]])//p[last()]"
-        near = self.monitor_element(xpath, 10, "obtain your 'Near' Balance")
+        near = self.monitor_element(xpath, 30, "obtain your 'Near' Balance")
         if near:
             try:
                 # Split the string by spaces and take the last element
@@ -112,7 +112,7 @@ class HotClaimer(Claimer):
         self.increase_step()
 
         xpath = "//h4[text()='Storage']"
-        self.move_and_click(xpath, 20, True, "click the 'storage' link", self.step, "clickable")
+        self.move_and_click(xpath, 30, True, "click the 'storage' link", self.step, "clickable")
         self.increase_step()
 
         self.get_balance(False)
@@ -158,11 +158,11 @@ class HotClaimer(Claimer):
                     self.increase_step()
                     
                     xpath = "//button[contains(text(), 'Claim HOT')]"
-                    self.move_and_click(xpath, 10, True, "click the claim button (1st button)", self.step, "clickable")
+                    self.move_and_click(xpath, 30, True, "click the claim button (1st button)", self.step, "clickable")
                     self.increase_step()
 
                     xpath = "//button[contains(text(), 'Claim HOT')]"
-                    self.move_and_click(xpath, 10, True, "click the claim button (2nd button - may not be present)", self.step, "clickable")
+                    self.move_and_click(xpath, 30, True, "click the claim button (2nd button - may not be present)", self.step, "clickable")
                     self.increase_step()
 
                     self.output(f"Step {self.step} - Let's wait for the pending Claim spinner to stop spinning...", 2)
@@ -274,7 +274,7 @@ class HotClaimer(Claimer):
                 self.output(f"Step {self.step}: Wait time element not found. Clicking the 'Storage' link and retrying...", 3)
                 storage_xpath = "//h4[text()='Storage']"
                 self.move_and_click(storage_xpath, 30, True, "click the 'storage' link", f"{self.step} recheck", "clickable")
-                wait_time_element = self.monitor_element(xpath, 15, "get the wait time after retry")
+                wait_time_element = self.monitor_element(xpath, 30, "get the wait time after retry")
                 if wait_time_element is not None:
                     return wait_time_element
                 else:
