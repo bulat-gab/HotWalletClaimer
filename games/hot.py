@@ -25,6 +25,8 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 
 from claimer import Claimer
 
+DELAY = 30
+
 class HotClaimer(Claimer):
 
     def initialize_settings(self):
@@ -228,7 +230,7 @@ class HotClaimer(Claimer):
         balance_xpath = f"//p[contains(text(), 'HOT')]/following-sibling::img/following-sibling::p"
 
         try:
-            element = self.monitor_element(balance_xpath, 15, "get balance")
+            element = self.monitor_element(balance_xpath, DELAY, "get balance")
             if element:
                 balance_part = element # .text.strip()
                 self.output(f"Step {self.step} - {balance_text} {balance_part}", priority)
@@ -267,7 +269,7 @@ class HotClaimer(Claimer):
     def get_wait_time(self, step_number="108", beforeAfter="pre-claim"):
         try:
             xpath = f"//div[contains(., 'Storage')]//p[contains(., '{self.pot_full}') or contains(., '{self.pot_filling}')]"
-            wait_time_element = self.monitor_element(xpath, 15, "get the wait time")
+            wait_time_element = self.monitor_element(xpath, DELAY, "get the wait time")
             if wait_time_element is not None:
                 return wait_time_element
             else:

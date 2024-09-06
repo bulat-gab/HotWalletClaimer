@@ -856,7 +856,7 @@ class Claimer:
         # There is a very unlikely scenario that the chat might have been cleared.
         # In this case, the "START" button needs pressing to expose the chat window!
         xpath = "//button[contains(., 'START')]"
-        button = self.move_and_click(xpath, DELAY, True, "check for the start button (should not be present)", self.step, "clickable")
+        button = self.move_and_click(xpath, 8, True, "check for the start button (should not be present)", self.step, "clickable")
         self.increase_step()
 
         # New link logic to avoid finding an expired link
@@ -1253,7 +1253,7 @@ class Claimer:
 
         try:
             # Wait for the presence of all elements located by the specified XPath with extended timeout
-            start_app_buttons = WebDriverWait(self.driver, 10).until(
+            start_app_buttons = WebDriverWait(self.driver, DELAY).until(
                 EC.presence_of_all_elements_located((By.XPATH, start_app_xpath))
             )
             clicked = False
