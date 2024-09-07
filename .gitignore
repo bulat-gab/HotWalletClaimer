@@ -5,6 +5,8 @@ do_not_commit.py
 selenium/**
 backups/**
 screenshots/**
+variables.txt
+status.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
