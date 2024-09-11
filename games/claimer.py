@@ -33,7 +33,7 @@ except ImportError:
 from session_proxy.selenium_wire import setup_driver_with_proxy, load_proxy
 
 # delay before timeout
-DELAY = 30
+DELAY = 60
 
 class Claimer:
 
@@ -681,12 +681,12 @@ class Claimer:
         self.output(f"Step {self.step} - Initiating the One-Time Password (OTP) method...\n",1)
         self.driver.get(self.url)
         xpath = "//button[contains(@class, 'btn-primary') and contains(., 'Log in by phone Number')]"
-        self.move_and_click(xpath, 30, True, "switch to log in by phone number", self.step, "visible")
+        self.move_and_click(xpath, DELAY, True, "switch to log in by phone number", self.step, "visible")
         self.increase_step()
 
         # Country Code Selection
         xpath = "//div[contains(@class, 'input-field-input')]"
-        self.target_element = self.move_and_click(xpath, 30, True, "update user's country", self.step, "visible")
+        self.target_element = self.move_and_click(xpath, DELAY, True, "update user's country", self.step, "visible")
         if not self.target_element:
             self.output(f"Step {self.step} - Failed to find country input field.", 1)
             return
@@ -698,7 +698,7 @@ class Claimer:
 
         # Phone Number Input
         xpath = "//div[contains(@class, 'input-field-input') and @inputmode='decimal']"
-        self.target_element = self.move_and_click(xpath, 30, True, "request user's phone number", self.step, "visible")
+        self.target_element = self.move_and_click(xpath, DELAY, True, "request user's phone number", self.step, "visible")
         if not self.target_element:
             self.output(f"Step {self.step} - Failed to find phone number input field.", 1)
             return
@@ -713,7 +713,8 @@ class Claimer:
                 user_phone = getpass.getpass(f"Step {self.step} - Please enter your phone number without leading 0 (hidden input): ")
             else:
                 user_phone = input(f"Step {self.step} - Please enter your phone number without leading 0 (visible input): ")
-    
+            user_phone = user_phone.replace(" ", "")
+
             if validate_phone_number(user_phone):
                 self.output(f"Step {self.step} - Valid phone number entered.",3)
                 break
@@ -724,12 +725,12 @@ class Claimer:
 
         # Wait for the "Next" button to be clickable and click it    
         xpath = "//button//span[contains(text(), 'Next')]"
-        self.move_and_click(xpath, 15, True, "click next to proceed to OTP entry", self.step, "visible")
+        self.move_and_click(xpath, DELAY, True, "click next to proceed to OTP entry", self.step, "visible")
         self.increase_step()
 
         try:
             # Attempt to locate and interact with the OTP field
-            wait = WebDriverWait(self.driver, 20)
+            wait = WebDriverWait(self.driver, DELAY)
             if self.settings['debugIsOn']:
                 self.debug_information("preparing for TG OTP","check")
             password = wait.until(EC.visibility_of_element_located((By.XPATH, "//input[@type='tel']")))
@@ -800,7 +801,7 @@ class Claimer:
                 time.sleep(10)
 
                 xpath = "//input[@type='password' and contains(@class, 'input-field-input')]"
-                fa_input = self.move_and_click(xpath, 10, False, "final check to make sure we are correctly logged in", self.step, "present")             
+                fa_input = self.move_and_click(xpath, DELAY, False, "final check to make sure we are correctly logged in", self.step, "present")             
 
                 if fa_input:
                     self.output(f"Step {self.step} - 2FA password entry is still showing, check your debug screenshots for further information.\n", 1)
@@ -851,7 +852,9 @@ class Claimer:
         self.increase_step()
 
         self.driver.get(self.url)
-        WebDriverWait(self.driver, 30).until(lambda d: d.execute_script('return document.readyState') == 'complete')
+        WebDriverWait(self.driver, 180).until(lambda d: d.execute_script('return document.readyState') == 'complete')
+
+        self.debug_information(f"DEBUG Go to page {self.url}")
 
         # There is a very unlikely scenario that the chat might have been cleared.
         # In this case, the "START" button needs pressing to expose the chat window!
@@ -899,7 +902,7 @@ class Claimer:
         self.output(f"Step {self.step} - Attempting to switch to the app's iFrame within '{iframe_container_class}'...", 2)
 
         try:
-            wait = WebDriverWait(self.driver, 20)
+            wait = WebDriverWait(self.driver, DELAY)
             # Locate the container div with the specified class name
             container = wait.until(EC.presence_of_element_located((By.CLASS_NAME, iframe_container_class)))
             # Find the iframe within the located container
