@@ -854,6 +854,8 @@ class Claimer:
         self.output(f"[DEBUG] Step {self.step} waiting 3 mins for eturn document.readyState")
         WebDriverWait(self.driver, 180).until(lambda d: d.execute_script('return document.readyState') == 'complete')
 
+        time.sleep(3600)
+
         # There is a very unlikely scenario that the chat might have been cleared.
         # In this case, the "START" button needs pressing to expose the chat window!
         xpath = "//button[contains(., 'START')]"
