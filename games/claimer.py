@@ -33,7 +33,7 @@ except ImportError:
 from session_proxy.selenium_wire import setup_driver_with_proxy, load_proxy
 
 # delay before timeout
-DELAY = 30
+DELAY = 60
 
 class Claimer:
 
@@ -851,7 +851,8 @@ class Claimer:
         self.increase_step()
 
         self.driver.get(self.url)
-        WebDriverWait(self.driver, 30).until(lambda d: d.execute_script('return document.readyState') == 'complete')
+        self.output(f"[DEBUG] Step {self.step} waiting 3 mins for eturn document.readyState")
+        WebDriverWait(self.driver, 180).until(lambda d: d.execute_script('return document.readyState') == 'complete')
 
         # There is a very unlikely scenario that the chat might have been cleared.
         # In this case, the "START" button needs pressing to expose the chat window!
