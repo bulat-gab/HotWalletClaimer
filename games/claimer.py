@@ -854,7 +854,8 @@ class Claimer:
         self.output(f"[DEBUG] Step {self.step} waiting 3 mins for eturn document.readyState")
         WebDriverWait(self.driver, 180).until(lambda d: d.execute_script('return document.readyState') == 'complete')
 
-        time.sleep(3600)
+        time.sleep(120)
+        self.debug_information("DEBUG my screenshot", "waitting")
 
         # There is a very unlikely scenario that the chat might have been cleared.
         # In this case, the "START" button needs pressing to expose the chat window!
