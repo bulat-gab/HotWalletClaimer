@@ -41,7 +41,7 @@ class HotClaimer(Claimer):
         self.forceRequestUserAgent = False
         self.step = "01"
         self.imported_seedphrase = None
-        self.start_app_xpath = "//a[@href='https://t.me/herewalletbot/app']"
+        self.start_app_xpath = "//div[contains(., 'Open Wallet')]"
 
     def __init__(self):
         self.settings_file = "variables.txt"
@@ -73,7 +73,7 @@ class HotClaimer(Claimer):
             self.move_and_click(xpath, 30, True, "click continue after seedphrase entry", self.step, "clickable")
             self.increase_step()
 
-            xpath = "//button[contains(text(), 'Select account')]"
+            xpath = "//button[contains(text(), 'Continue')]"
             self.move_and_click(xpath, 180, True, "click continue at account selection screen", self.step, "clickable")
             self.increase_step()
 
