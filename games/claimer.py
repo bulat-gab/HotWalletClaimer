@@ -729,7 +729,7 @@ class Claimer:
 
         try:
             # Attempt to locate and interact with the OTP field
-            wait = WebDriverWait(self.driver, 20)
+            wait = WebDriverWait(self.driver, DELAY)
             if self.settings['debugIsOn']:
                 self.debug_information("preparing for TG OTP","check")
             password = wait.until(EC.visibility_of_element_located((By.XPATH, "//input[@type='tel']")))
