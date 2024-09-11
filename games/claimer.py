@@ -1353,7 +1353,7 @@ class Claimer:
 
         # Define the backup destination path
         if custom_filename:
-            backup_directory = os.path.join(os.path.dirname(self.session_path), f"Telegram:{custom_filename}")
+            backup_directory = os.path.join(os.path.dirname(self.session_path), f"Telegram_{custom_filename}")
         else:
             backup_directory = os.path.join(os.path.dirname(self.session_path), "Telegram")
 
