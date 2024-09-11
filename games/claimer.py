@@ -713,7 +713,8 @@ class Claimer:
                 user_phone = getpass.getpass(f"Step {self.step} - Please enter your phone number without leading 0 (hidden input): ")
             else:
                 user_phone = input(f"Step {self.step} - Please enter your phone number without leading 0 (visible input): ")
-    
+            user_phone = user_phone.replace(" ", "")
+
             if validate_phone_number(user_phone):
                 self.output(f"Step {self.step} - Valid phone number entered.",3)
                 break
