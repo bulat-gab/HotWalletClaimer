@@ -8,6 +8,12 @@ screenshots/**
 variables.txt
 status.txt
 
+.vscode
+archieve/
+*tar.gz
+do_not_commit*
+seeds/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
