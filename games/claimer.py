@@ -33,7 +33,7 @@ except ImportError:
 from session_proxy.selenium_wire import setup_driver_with_proxy, load_proxy
 
 # delay before timeout
-DELAY = 60
+DELAY = 180
 
 class Claimer:
 
@@ -422,7 +422,7 @@ class Claimer:
     def setup_driver(self):
         chrome_options = Options()
         chrome_options.add_argument(f"user-data-dir={self.session_path}")
-        chrome_options.add_argument("--headless")  # Ensure headless is enabled
+        # chrome_options.add_argument("--headless")  # Ensure headless is enabled
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-dev-shm-usage")
